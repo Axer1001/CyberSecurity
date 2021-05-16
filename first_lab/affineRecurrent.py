@@ -8,33 +8,40 @@ def encrypt(text, a1, b1, a2, b2):
     res = ''
     aCur, bCur = a1, b1
     for i in range(len(text)):
+        if (i == 1):
+            aCur, bCur = a2, b2
+        elif i == 2:
+            aCur, bCur = (a1 * a2) % m, (b1 + b2) % m
+        elif i:
+            a1, b1 = a2,b2
+            a2, b2 = aCur, bCur
+            aCur, bCur = (a1 * a2) % m, (b1 + b2) % m
+
         if text[i] == ' ':
             res += ' '
             continue
         res += alph[((aCur * alph.index(text[i]) + bCur)) % m]
-        if i == 0:
-            aCur, bCur = a2, b2
-        elif i == 1:
-            aCur, bCur = (a1 * a2) % m, (b1 + b2) % m
-        else:
-            aCur, bCur, a1, b1, a2, b2 = (a1 * a2) % m, (b1 + b2) % m, a2, b2, aCur, bCur
     return res
 
 def decrypt(encryptedText, a1, b1, a2, b2):
     res = ''
     aCur, bCur = a1, b1
     for i in range(len(encryptedText)):
+        if (i == 1):
+            aCur, bCur = a2, b2
+        elif i == 2:
+            aCur, bCur = (a1 * a2) % m, (b1 + b2) % m
+        elif i:
+            a1, b1 = a2,b2
+            a2, b2 = aCur, bCur
+            aCur, bCur = (a1 * a2) % m, (b1 + b2) % m
+        
+
         if encryptedText[i] == ' ':
             res += ' '
             continue
         inverseA = pow(aCur, -1, m)
         res += alph[(inverseA * (alph.index(encryptedText[i]) - bCur)) % m]
-        if i == 0:
-            aCur, bCur = a2, b2
-        elif i == 1:
-            aCur, bCur = (a1 * a2) % m, (b1 + b2) % m
-        else:
-            aCur, bCur, a1, b1, a2, b2 = (a1 * a2) % m, (b1 + b2) % m, a2, b2, aCur, bCur
     return res
 
 def main():
