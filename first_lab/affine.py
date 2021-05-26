@@ -7,17 +7,17 @@ m = len(alph)
 def encrypt(text, a, b):
     res = ''
     for i in range(len(text)):
-        if text[i] == ' ':
+        if not text[i].isalpha():
             res += ' '
             continue
-        res += alph[((a * alph.index(text[i]) + b)) % m]
+        res += alph[((a * alph.index(text[i].lower()) + b)) % m]
     return res
 
 def decrypt(encryptedText, a, b):
     res = ''
     inverseA = pow(a, -1, m)
     for i in range(len(encryptedText)):
-        if encryptedText[i] == ' ':
+        if not encryptedText[i].isalpha():
             res += ' '
             continue
         res += alph[(inverseA * (alph.index(encryptedText[i]) - b)) % m]

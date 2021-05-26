@@ -5,16 +5,16 @@ key = [i for i in range(26)]
 def encrypt(text):
     res = ''
     for i in range(len(text)):
-        if text[i] == ' ':
+        if not text[i].isalpha():
             res += ' '
             continue
-        res += alph[key[alph.index(text[i])]]
+        res += alph[key[alph.index(text[i].lower())]]
     return res
     
 def decrypt(encryptedText):
     res = ''
     for i in range(len(encryptedText)):
-        if encryptedText[i] == ' ':
+        if not encryptedText[i].isalpha():
             res += ' '
             continue
         res += alph[key.index(ord(encryptedText[i]) - ord('a'))]
