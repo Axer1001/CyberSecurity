@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.linalg import det
+import sympy
 
 alph = "abcdefghijklmnopqrstuvwxyz, ."
 n = 0
@@ -14,24 +15,16 @@ def encrypt(text, K):
         while len(block) < n:
             block.append(alph.index(' '))
         
-        block = np.matrix(block)
-        encArr = block.dot(K).tolist()[0]
+        block = np.matrix(block).T
+        encArr = K.dot(block).reshape((1,n)).tolist()[0]
         encArr = [i % len(alph) for i in encArr]
         
         encrypted += ''.join([alph[i] for i in encArr])
     return encrypted            
 
 def decrypt(text, K):
-    dt = det(K)
-    inverseDt = pow(int(dt), -1, len(alph))
-    algD = K.getI() * dt * inverseDt
-    K = algD % len(alph)
-    newK = []
-    for r in K.A:
-        r = [int(round(i)) for i in r]
-        newK.append(r)
-
-    return encrypt(text, np.matrix(newK))
+    K = sympy.Matrix(K)
+    return encrypt(text, np.matrix(K.inv_mod(len(alph))))
         
 
 s = input('Enter text: ')
